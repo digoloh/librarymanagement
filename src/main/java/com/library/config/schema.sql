@@ -1,0 +1,25 @@
+-- schema.sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    role VARCHAR(20) NOT NULL CHECK (role IN ('USER', 'ADMIN'))
+);
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    isbn VARCHAR(20) UNIQUE NOT NULL,
+    available BOOLEAN DEFAULT TRUE,
+    approved BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE borrow_records (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    book_id INTEGER REFERENCES books(id) ON DELETE CASCADE,
+    borrow_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    return_date TIMESTAMP
+);
